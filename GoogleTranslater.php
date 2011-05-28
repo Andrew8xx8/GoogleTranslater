@@ -11,21 +11,42 @@
  * @licenze CI
  */
 
-class GoogleTranslater {
-    public function _construct() {
-
+class GioogleTranslater 
+{
+    private $_errors = "";
+  
+    public function _construct() 
+    {
+        if (!function_exists('curl_init'))
+            $this->_errors = "No CURL support";
     }   
     
-    public function translateText($text, $fromLanguage = "en", $toLanguage = "ru") {
-
+    public function translateText($text, $fromLanguage = "en", $toLanguage = "ru") 
+    {
+        if (!empty($this->_errors)) {
+            
+        } else
+            return false;
     } 
     
-    public function translateArray($array, $fromLanguage = "en", $toLanguage = "ru") {
-
+    public function translateArray($array, $fromLanguage = "en", $toLanguage = "ru") 
+    {
+        if (!empty($this->_errors)) {
+            
+        } else
+            return false;
     }
 
-    public function getLanguages(){
-
+    public function getLanguages()
+    {
+        if (!empty($this->_errors)) {
+            
+        } else
+            return false; 
+    }
+    
+    public function getErrors(){
+        return $this->_errors;
     }
 }
 ?>
