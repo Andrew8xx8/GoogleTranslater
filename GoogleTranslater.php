@@ -94,16 +94,26 @@ class GoogleTranslater
         }
         curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.71 Safari/534.24");  
         $response = curl_exec($curl);
+        // Check if any error occured
+        if(curl_errno($curl))
+        {
+            $this->_errors .=  "Curl Error: ".curl_error($curl);
+            return false;
+        }
         curl_close($curl);
         return $response;
     }
 
     private function _parceGoogleResponse($response, $translit = false)
     {
-        $json = new Services_JSON(); 
-        $response =  $json->decode($response);                    
+        if (empty($this->_errors)) {
+            $json = new Services_JSON(); 
+            $response =  $json->decode($response);                    
 
-        return $translit ? $response->sentences[0]->translit : $response->sentences[0]->trans;
+            return $translit ? $response->sentences[0]->translit : $response->sentences[0]->trans;  
+        }  else {
+            return false;
+        }
     }
 }
 ?>
