@@ -31,10 +31,12 @@ class GoogleTranslater
             return false;
     } 
     
-    public function translateArray($array, $fromLanguage = "en", $toLanguage = "ru", $trans = false) 
+    public function translateArray($array, $fromLanguage = "en", $toLanguage = "ru", $translit = false) 
     {
         if (empty($this->_errors)) {
-            
+            $text = implode("[(<#>)]", $array);
+            $response = $this->translateText($text, $fromLanguage, $toLanguage, $translit);
+            return $this->_explode($response);
         } else
             return false;
     }
@@ -51,7 +53,16 @@ class GoogleTranslater
     {
         return $this->_errors;
     }
-
+    
+    private function _explode($text)
+    {        
+        $array = explode("[(<#>)]", $text); 
+        foreach ($array as &$string) {
+            $string = trim($string);
+        }
+        return $array;
+    }
+ 
     private function _curlToGoogle($url)
     {
         $curl = curl_init();
@@ -71,7 +82,7 @@ class GoogleTranslater
         $json = new Services_JSON(); 
         $response =  $json->decode($response);                    
 
-        return $translit ? $responsei->sentences[0]->translit : $response->sentences[0]->trans;
+        return $translit ? $response->sentences[0]->translit : $response->sentences[0]->trans;
     }
 }
 ?>
