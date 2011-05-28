@@ -9,19 +9,32 @@ require_once("json.php");
  * @version 1.0.0
  * @license https://github.com/Andrew8xx8/GoogleTranslater/blob/master/MIT-LICENSE.txt
  * @copyright Andrew Kulakov (c) 2011
- * @licenze CI
  */
 
 class GoogleTranslater 
 {
+    /**
+     * @var string Some errors
+     */
     private $_errors = "";
   
+    /**
+     * Constructor
+     */
     public function _construct() 
     {
         if (!function_exists('curl_init'))
             $this->_errors = "No CURL support";
     }   
     
+    /**
+     * Translate text.
+     * @param  string $text          Source text to translate
+     * @param  string $fromLanguage  Source language
+     * @param  string $toLanguage    Destenation language
+     * @param  bool   $translit      If true function return transliteration of source text 
+     * @return string|bool           Translated text or false if exists errors
+     */
     public function translateText($text, $fromLanguage = "en", $toLanguage = "ru", $translit = false) 
     {
         if (empty($this->_errors)) {
@@ -30,7 +43,15 @@ class GoogleTranslater
         } else
             return false;
     } 
-    
+
+    /**
+     * Translate array.
+     * @param  array  $array         Array with source text to translate
+     * @param  string $fromLanguage  Source language
+     * @param  string $toLanguage    Destenation language
+     * @param  bool   $translit      If true function return transliteration of source text 
+     * @return array|bool            Array  with translated text or false if exists errors
+     */     
     public function translateArray($array, $fromLanguage = "en", $toLanguage = "ru", $translit = false) 
     {
         if (empty($this->_errors)) {
