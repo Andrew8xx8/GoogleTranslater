@@ -11,20 +11,25 @@
 
 require_once("GoogleTranslater.php");
 
-// Try to translate text
-$ga = new GoogleTranslater();
-$translatedText = $ga->translateText("Try to translate this text.", "en", "ru");
-if ($translatedText !== false) {
-    echo $translatedText;
-} else {
-    echo $ga->getErrors(); 
-}
+// Create GT Object
+    $gt = new GoogleTranslater();
+
+// Translate text
+// Usage: GoogleTranslater :: translateText(string $text, string $fromLanguage, string $tolanguage, bool $translit = false)
+    $translatedText = $gt->translateText("Try to translate this text.", "en", "ru");
+    if ($translatedText !== false) {
+        echo $translatedText;
+    } else {
+        //If some errors present
+        echo $gt->getErrors(); 
+    }
 
 // Crasy stuff. Translate array
-$translatedArray = $ga->translateArray(array("Some", "Words", "To", "Translate"), "en", "ru");
-if ($translatedArray !== false) {
-    print_r($translatedArray);
-} else {
-    echo $ga->getErrors(); 
-}    
+// Usage: GoogleTranslater :: translateArray(array $array, string $fromLanguage, string $tolanguage, bool $translit = false)
+    $translatedArray = $ga->translateArray(array("Some", "Words", "To", "Translate"), "en", "ru");
+    if ($translatedArray !== false) {
+        print_r($translatedArray);
+    } else {
+        echo $ga->getErrors(); 
+    }    
 ?>
