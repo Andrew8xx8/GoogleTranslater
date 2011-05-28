@@ -57,7 +57,9 @@ class GoogleTranslater
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_REFERER, $_SERVER['HTTP_REFERER']);
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            curl_setopt($curl, CURLOPT_REFERER, $_SERVER['HTTP_REFERER']);
+        }
         curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.71 Safari/534.24");  
         $response = curl_exec($curl);
         curl_close($curl);
