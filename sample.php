@@ -26,10 +26,10 @@ require_once("GoogleTranslater.php");
 
 // Crasy stuff. Translate array
 // Usage: GoogleTranslater :: translateArray(array $array, string $fromLanguage, string $tolanguage, bool $translit = false)
-    $translatedArray = $ga->translateArray(array("Some", "Words", "To", "Translate"), "en", "ru");
+    $translatedArray = $gt->translateArray(array("Some", "Words", "To", "Translate"), "en", "ru");
     if ($translatedArray !== false) {
         print_r($translatedArray);
     } else {
-        echo $ga->getErrors(); 
+        echo $gt->getErrors(); 
     }    
 ?>
