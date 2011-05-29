@@ -38,8 +38,16 @@ class GoogleTranslater
     public function translateText($text, $fromLanguage = "en", $toLanguage = "ru", $translit = false) 
     {
         if (empty($this->_errors)) {
-             $response = $this->_curlToGoogle("http://translate.google.com/translate_a/t?client=te&text=".urlencode($text)."&hl=ru&sl=$fromLanguage&tl=i$toLanguage&multires=1&otf=1&ssel=0&tsel=0&uptl=ru&sc=1");    
-             return $this->_parceGoogleResponse($response, $translit); 
+            $result = "";
+            for($i = 0; $i < strlen($text); $i += 500)
+            {
+                $subText = substr($text, $i, 500);
+
+                $response = $this->_curlToGoogle("http://translate.google.com/translate_a/t?client=te&text=".urlencode($subText)."&hl=ru&sl=$fromLanguage&tl=i$toLanguage&multires=1&otf=1&ssel=0&tsel=0&uptl=ru&sc=1");
+                $result .= $this->_parceGoogleResponse($response, $translit);
+//                sleep(1); 
+            }
+            return $result;
         } else
             return false;
     } 
@@ -77,11 +85,7 @@ class GoogleTranslater
     
     private function _explode($text)
     {        
-        $array = explode("[(<#>)]", $text); 
-        foreach ($array as &$string) {
-            $string = trim($string);
-        }
-        return $array;
+        return array_map('trim', explode('[(<#>)]', $text));
     }
  
     private function _curlToGoogle($url)
@@ -107,10 +111,12 @@ class GoogleTranslater
     private function _parceGoogleResponse($response, $translit = false)
     {
         if (empty($this->_errors)) {
-            $json = new Services_JSON(); 
-            $response =  $json->decode($response);                    
-
-            return $translit ? $response->sentences[0]->translit : $response->sentences[0]->trans;  
+            $result = "";            
+            $json = json_decode($response);
+            foreach ($json->sentences as $sentence) {
+                $result .= $translit ? $sentence->translit : $sentence->trans;  
+            }
+            return $result;
         }  else {
             return false;
         }
