@@ -39,9 +39,9 @@ class GoogleTranslater
     {
         if (empty($this->_errors)) {
             $result = "";
-            for($i = 0; $i < strlen($text); $i += 500)
+            for($i = 0; $i < strlen($text); $i += 1000)
             {
-                $subText = substr($text, $i, 500);
+                $subText = substr($text, $i, 1000);
 
                 $response = $this->_curlToGoogle("http://translate.google.com/translate_a/t?client=te&text=".urlencode($subText)."&hl=ru&sl=$fromLanguage&tl=i$toLanguage&multires=1&otf=1&ssel=0&tsel=0&uptl=ru&sc=1");
                 $result .= $this->_parceGoogleResponse($response, $translit);
@@ -63,7 +63,7 @@ class GoogleTranslater
     public function translateArray($array, $fromLanguage = "en", $toLanguage = "ru", $translit = false) 
     {
         if (empty($this->_errors)) {
-            $text = implode("[(<#>)]", $array);
+            $text = implode("[<#>]", $array);
             $response = $this->translateText($text, $fromLanguage, $toLanguage, $translit);
             return $this->_explode($response);
         } else
@@ -85,7 +85,8 @@ class GoogleTranslater
     
     private function _explode($text)
     {        
-        return array_map('trim', explode('[(<#>)]', $text));
+        $text = preg_replace("%\[\s*<\s*#\s*>\s*\]%", "[<#>]", $text);
+        return array_map('trim', explode('[<#>]', $text));
     }
  
     private function _curlToGoogle($url)
