@@ -1,5 +1,4 @@
 <?php
-require_once("json.php");
 /**
  * GoogleTranslater is PHP interface for http://translate.google.com/
  * It send request to google translate service, get response and provide 
@@ -114,6 +113,7 @@ class GoogleTranslater
         if (empty($this->_errors)) {
             $result = "";            
             $json = json_decode($response);
+            print_r($json);            
             foreach ($json->sentences as $sentence) {
                 $result .= $translit ? $sentence->translit : $sentence->trans;  
             }
