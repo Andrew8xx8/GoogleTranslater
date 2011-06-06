@@ -72,11 +72,24 @@ class GoogleTranslater
     public function getLanguages()
     {
         if (empty($this->_errors)) {
-            
-        } else
+            $page = $this->_curlToGoogle('http://translate.google.com/');
+            preg_match('%<select[^<]*?tl[^<]*?>(.*?)</select>%is', $page, $match);
+            preg_match_all("%<option.*?value=\"(.*?)\">(.*?)</option>%is", $match[0], $languages);
+            return $languages;           
+        } else                 
             return false; 
     }
     
+    public function getLanguagesHTML()
+    {
+        if (empty($this->_errors)) {
+            $page = $this->_curlToGoogle('http://translate.google.com/');
+            preg_match('%<select[^<]*?tl[^<]*?>(.*?)</select>%is', $page, $match);
+            return $match[1];
+        } else                 
+            return false; 
+    }
+     
     public function getErrors()
     {
         return $this->_errors;
@@ -112,8 +125,7 @@ class GoogleTranslater
     {
         if (empty($this->_errors)) {
             $result = "";            
-            $json = json_decode($response);
-            print_r($json);            
+            $json = json_decode($response);           
             foreach ($json->sentences as $sentence) {
                 $result .= $translit ? $sentence->translit : $sentence->trans;  
             }
