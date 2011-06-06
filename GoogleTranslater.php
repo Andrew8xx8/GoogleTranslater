@@ -77,7 +77,7 @@ class GoogleTranslater
             preg_match_all("%<option.*?value=\"(.*?)\">(.*?)</option>%is", $match[0], $languages);
             $result = Array();
             for($i = 0; $i < count($languages[0]); $i++){
-                $result[] = Array($languages[1][$i]=>$languages[2][$i]);
+                $result[$languages[1][$i]] = $languages[2][$i]);
             }
             return $result;           
         } else                 
