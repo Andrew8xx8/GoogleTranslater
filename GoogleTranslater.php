@@ -75,7 +75,11 @@ class GoogleTranslater
             $page = $this->_curlToGoogle('http://translate.google.com/');
             preg_match('%<select[^<]*?tl[^<]*?>(.*?)</select>%is', $page, $match);
             preg_match_all("%<option.*?value=\"(.*?)\">(.*?)</option>%is", $match[0], $languages);
-            return $languages;           
+            $result = Array();
+            for($i = 0; $i < count($languages[0]); $i++){
+                $result[] = Array($languages[1][$i]=>$languages[2][$i]);
+            }
+            return $result;           
         } else                 
             return false; 
     }
