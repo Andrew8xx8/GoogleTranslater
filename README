@@ -1,1 +1,1 @@
-This classprovides simple interface to translate some text from PHP with Google TRanslate Service
+This PHP class provides a simple interface for translating text with the Google Translate service.

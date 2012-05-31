@@ -1,8 +1,8 @@
 <?php
 /**
- * GoogleTranslater is PHP interface for http://translate.google.com/
- * It send request to google translate service, get response and provide 
- * translated text.
+ * GoogleTranslater is a PHP interface for http://translate.google.com/
+ * It sends a request to the google translate service, gets a response and 
+ * provides the translated text.
  *
  * @author Andrew Kulakov <avk@8xx8.ru>
  * @version 1.0.0
@@ -42,7 +42,7 @@ class GoogleTranslater
             {
                 $subText = substr($text, $i, 1000);
 
-                $response = $this->_curlToGoogle("http://translate.google.com/translate_a/t?client=te&text=".urlencode($subText)."&hl=ru&sl=$fromLanguage&tl=i$toLanguage&multires=1&otf=1&ssel=0&tsel=0&uptl=ru&sc=1");
+                $response = $this->_curlToGoogle("http://translate.google.com/translate_a/t?client=te&text=".urlencode($subText)."&hl=$toLanguage&sl=$fromLanguage&tl=i$toLanguage&multires=1&otf=1&ssel=0&tsel=0&uptl=ru&sc=1");
                 $result .= $this->_parceGoogleResponse($response, $translit);
 //                sleep(1); 
             }
@@ -77,7 +77,7 @@ class GoogleTranslater
             preg_match_all("%<option.*?value=\"(.*?)\">(.*?)</option>%is", $match[0], $languages);
             $result = Array();
             for($i = 0; $i < count($languages[0]); $i++){
-                $result[$languages[1][$i]] = $languages[2][$i]);
+                $result[$languages[1][$i]] = $languages[2][$i];
             }
             return $result;           
         } else                 
